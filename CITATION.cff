@@ -5,7 +5,7 @@ authors:
     website: "https://github.com/11-qlab"
 title: "holomol: Holographic Molecular Quantum Register Simulator"
 version: 1.0.0
-doi: 10.5281/zenodo.PLACEHOLDER
+doi: 10.5281/zenodo.23304955
 date-released: 2026-10-12
 url: "https://github.com/11-qlab/holomol"
 license: Apache-2.0
