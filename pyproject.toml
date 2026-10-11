@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "holomol"
+version = "0.1.0"
+description = "Holographic molecular storage and compute simulator"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.22",
+    "scipy>=1.8",
+    "matplotlib>=3.5",
+]
+
+[project.optional-dependencies]
+openqhal = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["holomol*"]

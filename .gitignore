@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.bak
+*.bak.*
+*.gemini
+*.important
+.DS_Store
+venv/
+.venv/
