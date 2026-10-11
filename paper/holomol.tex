@@ -496,6 +496,112 @@ itself. Job ID \texttt{db5u3c2mb58s738b1160}; data in
 \texttt{results/12\_ibm\_hardware.npz}.
 
 
+
+\subsection{Mode cross-talk under multiplexed writes}
+\label{sec:crosstalk}
+
+The register can store $K$ classical bits simultaneously in $K$
+orthogonal modes. On a perfect lattice, adjacent modes at commensurate
+separations $\Delta q = k \cdot 2\pi/(Na)$ are \emph{exactly}
+orthogonal: the Dirichlet kernel vanishes identically, and a numerical
+scan over $N = 50$ to $5000$ sites returns cross-talk at the
+floating-point noise floor ($|S| < 10^{-9}$) for all but the smallest
+ensembles. Real cross-talk therefore originates not from the lattice
+geometry but from experimental imperfections -- finite write-pulse
+bandwidth, laser-frequency drift, and trap anharmonicity. A conservative
+budget of $1\%$ total cross-talk over $K$ simultaneous writes yields
+a practical storage capacity of $K \lesssim 0.01\,N$, roughly two
+orders of magnitude below the geometric capacity $N$. An independent
+multi-mode read-out simulation with random $K$-bit words confirms this:
+for $N = 10^4$ the bit-error rate remains below $1\%$ at $K = 127$,
+while for $N = 100$ it already reaches $48\%$ at $K = 100$. The two
+estimates agree to within a factor of $2$.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{../results/13b_mode_isolation.png}
+\caption{Mode cross-talk. Left: per-pulse $|S(\Delta q)|$ vs $N$ for
+four mode separations, showing the vanishing of lattice cross-talk at
+commensurate $\Delta q$. Right: accumulated cross-talk $K/N$ over $K$
+simultaneous writes with $1\%$ and $10\%$ thresholds.}
+\label{fig:13b}
+\end{figure}
+
+\subsection{Finite-temperature fidelity floor}
+\label{sec:finiteT}
+
+Real experiments operate at finite temperature. We model fidelity as
+$F(T) = P_0(T) \, e^{-t/T_2(T)}$, where $P_0(T)$ is the Boltzmann
+population of the rotational ground state and $T_2(T)$ combines the
+collision rate $n\sigma v_{\rm th}(T)$ with the phase-space density
+fixed at $n \propto T^{3/2}$. This gives $T_2 \propto T^{-2}$ at fixed
+phase-space density, so both factors improve as $T$ decreases. The
+fidelity is therefore monotonically increasing as $T \to 0$, and
+\textbf{there is no optimal intermediate temperature}.
+
+At the laser-cooling floor of $T = 100$~nK, all three species reach
+$F > 0.999$ at 1~s hold:
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Species & $F$ @ 100~nK & $F$ @ 1~$\mu$K & $F$ @ 100~$\mu$K \\
+\midrule
+KRb & $0.9993$ & $0.935$ & $<10^{-3}$ \\
+NaK & $0.9994$ & $0.946$ & $<10^{-3}$ \\
+SrF & $\mathbf{0.9997}$ & $0.972$ & $<10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Above $100~\mu$K the Boltzmann population of excited rotational states
+destroys the encoding for all species, so the memory requires loading
+into the rotational ground state via standard optical-pumping schemes.
+\textbf{The scheme is compatible with current experimental temperatures;
+no additional cooling is required.}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{../results/15b_finite_T_floor.png}
+\caption{Finite-temperature fidelity. The fidelity is monotone in $T$;
+at the laser-cooling floor (100~nK, green band), all species exceed
+$F > 0.999$.}
+\label{fig:15b}
+\end{figure}
+
+\subsection{STIRAP vs Raman under spontaneous emission}
+\label{sec:stirap}
+
+The collective mode can be prepared either by a direct Raman
+$\pi$-pulse or by STIRAP using counter-intuitive pulse ordering. The
+Raman $\pi$-pulse transiently populates $|e\rangle$; STIRAP follows a
+dark state with zero $|e\rangle$ population, making it largely immune
+to spontaneous emission. We integrate the full three-level Lindblad
+master equation with emission rate $\Gamma$ from $|e\rangle$:
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+$\Gamma/2\pi$ (Hz) & $F_{\rm STIRAP}$ & $F_{\rm Raman}$ & Advantage \\
+\midrule
+$10^3$  & $0.9997$ & $0.9644$ & $+0.036$ \\
+$10^4$  & $0.9983$ & $0.9171$ & $+0.081$ \\
+$10^5$  & $\mathbf{0.9960}$ & $\mathbf{0.8277}$ & $\mathbf{+0.168}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{STIRAP maintains $F > 0.99$ at all $\Gamma$ while the Raman
+$\pi$-pulse fails above $\Gamma/2\pi \gtrsim 10$~kHz.} For species with
+strong $|g\rangle \to |e\rangle$ dipole coupling, where $\Gamma$ can
+reach $2\pi \times 10^5$~Hz, STIRAP is the only viable write protocol.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{../results/16b_stirap.png}
+\caption{STIRAP vs Raman. Left: transfer fidelity vs pulse duration
+for three emission rates. Centre: STIRAP advantage. Right: infidelity
+vs duration. STIRAP preserves $F > 0.99$ at all $\Gamma$.}
+\label{fig:16b}
+\end{figure}
+
+
 \section{Discussion}
 
 Our results convert the 2008 holographic molecular register proposal
