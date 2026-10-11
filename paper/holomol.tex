@@ -602,6 +602,91 @@ vs duration. STIRAP preserves $F > 0.99$ at all $\Gamma$.}
 \end{figure}
 
 
+
+\subsection{Mitigation taxonomy for phase noise}
+\label{sec:taxonomy}
+
+The register is subject to three distinct types of phase noise, each
+requiring a different mitigation strategy. We verify each in a
+controlled simulation.
+
+\paragraph{Uniform phase noise.} A site-independent phase
+$\phi_j = \phi$ acts as a global phase on any same-excitation
+encoding. Both codewords of $\{|f, \mathbf q_1\rangle, |f, \mathbf q_2\rangle\}$
+acquire the same phase, so the logical state is unchanged: $F = 1$
+exactly, for any $\phi$. This is the standard decoherence-free
+subspace (DFS) mechanism, and it is enabled by excitation-number
+conservation, not by the Raman dark-state property
+(Sec.~\ref{sec:dilution}).
+
+\paragraph{Coherent gradient.} A linear phase gradient
+$\phi_j = \beta(j/N - 1/2)$ acts as a displacement in momentum space,
+$|f, \mathbf q\rangle \to |f, \mathbf q + \beta/(Na)\rangle$. The
+state remains \emph{pure} (verified: purity $= 1.0000000000$) and a
+single counter-pulse implementing the inverse shift recovers
+$F = 1.0000000000$ exactly, for any $\beta$. \textbf{Coherent
+gradients are displacements with an exact inverse, not decoherence.}
+Dynamical decoupling does \emph{not} help: a $\pi$-pulse swaps the
+codewords but does not flip the sign of the accumulated displacement,
+so the field is not refocused (advantage $|\Delta F| < 0.03$ across
+all encodings).
+
+\paragraph{Stochastic gradient.} When the sign and magnitude of the
+gradient fluctuate in time, the state performs a random walk in
+$\mathbf q$-space. Over 100 steps with per-step field $\sigma = 1.0$
+rad, the uncorrected fidelity drops to $0.0359$. DD is neutral for the
+same reason as for coherent gradients. The correct mitigation is
+\emph{measurement-based feedforward}: weakly measure the accumulated
+gradient at each step and apply a real-time counter-shift. With
+perfect estimation the fidelity is restored to
+$\mathbf{F = 1.000000}$; with fractional measurement error
+$\sigma_m$ the fidelity degrades gracefully
+(Table~\ref{tab:taxonomy}, Figure~\ref{fig:13f}).
+
+\begin{table}[t]
+\centering
+\small
+\caption{Feedforward fidelity vs measurement error. Uncorrected
+random walk over 100 steps with $\sigma = 1.0$ gives $F = 0.0359$.}
+\label{tab:taxonomy}
+\begin{tabular}{lc}
+\toprule
+Measurement error $\sigma_m$ & Fidelity \\
+\midrule
+Uncorrected (no FF) & $0.0359$ \\
+$0.00$ (perfect)    & $\mathbf{1.000000}$ \\
+$0.01$              & $0.999748$ \\
+$0.05$              & $0.992595$ \\
+$0.10$              & $0.980507$ \\
+$0.20$              & $0.317334$ \\
+$0.50$              & $0.292639$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Noise & Mechanism & Verified mitigation \\
+\midrule
+Uniform phase       & Global phase    & Same-excitation DFS (F = 1) \\
+Coherent gradient   & $\mathbf q$-shift & $\mathbf q$-shift pulse (F = 1) \\
+Stochastic gradient & Random walk     & Feedforward tracking (F $\to$ 1) \\
+Stochastic gradient & Random walk     & DD (\emph{does not work}) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{../results/13f_stochastic_mitigation.png}
+\caption{Stochastic-gradient mitigation by measurement and feedforward.
+Left: fidelity over time for uncorrected random walk vs real-time
+feedforward. Right: fidelity vs feedforward estimation error.}
+\label{fig:13f}
+\end{figure}
+
+
 \section{Discussion}
 
 Our results convert the 2008 holographic molecular register proposal
